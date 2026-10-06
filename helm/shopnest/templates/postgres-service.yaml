@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  labels:
+    {{- include "shopnest.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+
+  selector:
+    app: postgres
+
+  ports:
+    - name: postgres
+      port: {{ .Values.postgres.service.port }}
+      targetPort: {{ .Values.postgres.service.targetPort }}
+      protocol: TCP

@@ -14,3 +14,7 @@ node_modules/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Temporary project files
+shopnest-redesign-v2.zip
+helm/shopnest-backup/

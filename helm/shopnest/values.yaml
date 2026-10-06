@@ -1,0 +1,166 @@
+# Default values for ShopNest Helm chart.
+
+# ------------------------------------------------------------
+# Frontend
+# ------------------------------------------------------------
+frontend:
+  replicaCount: 1
+
+  image:
+    repository: shopnest-frontend
+    tag: "2.1"
+    pullPolicy: IfNotPresent
+
+  service:
+    type: NodePort
+    port: 80
+    targetPort: 80
+    nodePort: 30080
+
+  probes:
+    readiness:
+      path: /
+      port: 80
+      initialDelaySeconds: 5
+      periodSeconds: 10
+
+    liveness:
+      path: /
+      port: 80
+      initialDelaySeconds: 10
+      periodSeconds: 20
+
+
+# ------------------------------------------------------------
+# Products API
+# ------------------------------------------------------------
+products:
+  replicaCount: 1
+
+  image:
+    repository: docker-products-service
+    tag: latest
+    pullPolicy: IfNotPresent
+
+  service:
+    type: ClusterIP
+    port: 3001
+    targetPort: 3001
+
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
+
+  probes:
+    readiness:
+      path: /health
+      port: 3001
+      initialDelaySeconds: 5
+      periodSeconds: 10
+
+    liveness:
+      path: /health
+      port: 3001
+      initialDelaySeconds: 10
+      periodSeconds: 20
+
+
+# ------------------------------------------------------------
+# PostgreSQL
+# ------------------------------------------------------------
+postgres:
+  image:
+    repository: postgres
+    tag: "16-alpine"
+    pullPolicy: IfNotPresent
+
+  service:
+    port: 5432
+    targetPort: 5432
+
+  storage:
+    size: 1Gi
+    accessMode: ReadWriteOnce
+
+
+# ------------------------------------------------------------
+# Redis
+# ------------------------------------------------------------
+redis:
+  replicaCount: 1
+
+  image:
+    repository: redis
+    tag: "7-alpine"
+    pullPolicy: IfNotPresent
+
+  service:
+    port: 6379
+    targetPort: 6379
+
+
+# ------------------------------------------------------------
+# Application Configuration
+# ------------------------------------------------------------
+config:
+  nodeEnv: production
+  port: "3001"
+
+  database:
+    host: postgres
+    port: "5432"
+    name: ecommerce_db
+    user: ecommerce_user
+
+  redis:
+    host: redis
+    port: "6379"
+
+
+# ------------------------------------------------------------
+# Database Secret
+# ------------------------------------------------------------
+secret:
+  dbPassword: CHANGE_ME
+
+
+# ------------------------------------------------------------
+# Products Horizontal Pod Autoscaler
+# ------------------------------------------------------------
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 50
+
+
+# ------------------------------------------------------------
+# Prometheus ServiceMonitor
+# ------------------------------------------------------------
+serviceMonitor:
+  enabled: true
+  namespace: monitoring
+  labels:
+    release: monitoring
+  path: /metrics
+  interval: 15s
+
+
+# ------------------------------------------------------------
+# Common Kubernetes settings
+# ------------------------------------------------------------
+imagePullSecrets: []
+
+nameOverride: ""
+fullnameOverride: ""
+
+podAnnotations: {}
+podLabels: {}
+
+nodeSelector: {}
+tolerations: []
+affinity: {}

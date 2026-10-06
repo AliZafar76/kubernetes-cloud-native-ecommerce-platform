@@ -1,0 +1,24 @@
+{{- if .Values.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+
+metadata:
+  name: products-service-monitor
+  namespace: {{ .Values.serviceMonitor.namespace }}
+  labels:
+    release: {{ .Values.serviceMonitor.labels.release | quote }}
+
+spec:
+  selector:
+    matchLabels:
+      app: products
+
+  namespaceSelector:
+    matchNames:
+      - ecommerce
+
+  endpoints:
+    - port: http
+      path: {{ .Values.serviceMonitor.path }}
+      interval: {{ .Values.serviceMonitor.interval }}
+{{- end }}

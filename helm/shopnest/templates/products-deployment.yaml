@@ -1,0 +1,105 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: products
+  labels:
+    {{- include "shopnest.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.products.replicaCount }}
+
+  selector:
+    matchLabels:
+      app: products
+
+  template:
+    metadata:
+      labels:
+        app: products
+
+    spec:
+      containers:
+        - name: products
+          image: "{{ .Values.products.image.repository }}:{{ .Values.products.image.tag }}"
+          imagePullPolicy: {{ .Values.products.image.pullPolicy }}
+
+          ports:
+            - name: http
+              containerPort: 3001
+              protocol: TCP
+
+          resources:
+            requests:
+              cpu: {{ .Values.products.resources.requests.cpu | quote }}
+              memory: {{ .Values.products.resources.requests.memory | quote }}
+            limits:
+              cpu: {{ .Values.products.resources.limits.cpu | quote }}
+              memory: {{ .Values.products.resources.limits.memory | quote }}
+
+          env:
+            - name: NODE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: ecommerce-config
+                  key: NODE_ENV
+
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: ecommerce-config
+                  key: PORT
+
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: ecommerce-config
+                  key: DB_HOST
+
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: ecommerce-config
+                  key: DB_PORT
+
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: ecommerce-config
+                  key: DB_NAME
+
+            - name: DB_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: ecommerce-config
+                  key: DB_USER
+
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: ecommerce-secret
+                  key: DB_PASSWORD
+
+            - name: REDIS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: ecommerce-config
+                  key: REDIS_HOST
+
+            - name: REDIS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: ecommerce-config
+                  key: REDIS_PORT
+
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.products.probes.readiness.path }}
+              port: {{ .Values.products.probes.readiness.port }}
+            initialDelaySeconds: {{ .Values.products.probes.readiness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.products.probes.readiness.periodSeconds }}
+
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.products.probes.liveness.path }}
+              port: {{ .Values.products.probes.liveness.port }}
+            initialDelaySeconds: {{ .Values.products.probes.liveness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.products.probes.liveness.periodSeconds }}

@@ -1,7 +1,79 @@
 import { Link } from 'react-router-dom'
+import AnimatedCounter from './AnimatedCounter'
 
 function Hero() {
-  return <section className="hero-section"><div className="container hero-content"><div className="hero-copy reveal"><p className="eyebrow">The new everyday / 2026</p><h1>Good things,<br /><em>well chosen.</em></h1><p className="hero-description">A refined collection of objects that bring a little more intention to the way you live, work, and wind down.</p><div className="hero-actions"><Link className="button button-dark" to="/products">Shop the collection <span>↗</span></Link><a className="text-link" href="#featured">Explore featured <span>↓</span></a></div></div><div className="hero-art reveal"><div className="hero-image"><img src="https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?auto=format&fit=crop&w=1200&q=85" alt="Warmly lit, minimal desk workspace" /></div><div className="hero-stamp">CURATED<br />WITH CARE</div><div className="hero-caption"><span>01 / 04</span><span>Objects with a point of view</span></div></div></div></section>
+  return (
+    <section className="hero-section">
+      <div className="hero-blob hero-blob-1" aria-hidden="true" />
+      <div className="hero-blob hero-blob-2" aria-hidden="true" />
+
+      <div className="container hero-content">
+        <div className="hero-copy">
+          <p className="eyebrow hero-kicker">✦ Curated essentials, SS26 collection</p>
+          <h1>
+            Thoughtful design for
+            <span className="gradient-text"> everyday rituals.</span>
+          </h1>
+          <p className="hero-description">
+            Discover pieces that feel polished, useful, and quietly luxurious — the kind of objects
+            that make your home, desk, and routine feel elevated.
+          </p>
+
+          <div className="hero-actions">
+            <Link className="button button-primary" to="/products">
+              Shop the collection
+              <span>→</span>
+            </Link>
+            <Link className="button button-ghost" to="/categories">
+              Explore categories
+            </Link>
+          </div>
+
+          <div className="hero-meta">
+            <div>
+              <strong><AnimatedCounter value={12} suffix="K+" /></strong>
+              <span>happy shoppers</span>
+            </div>
+            <div>
+              <strong><AnimatedCounter value={4.9} decimals={1} suffix="/5" /></strong>
+              <span>average rating</span>
+            </div>
+            <div>
+              <strong>Free</strong>
+              <span>shipping over $100</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="hero-visual" aria-label="Featured lifestyle product arrangement">
+          <div className="hero-feature-card hero-card-main">
+            <img
+              src="https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?auto=format&fit=crop&w=1200&q=85"
+              alt="Modern minimal desk workspace"
+            />
+          </div>
+
+          <div className="hero-feature-card hero-card-floating hero-card-top">
+            <span>New drop</span>
+            <strong>Atelier Desk Lamp</strong>
+            <small>$189.00</small>
+          </div>
+
+          <div className="hero-feature-card hero-card-floating hero-card-bottom">
+            <div className="mini-pill">
+              <span className="dot" />
+              Ready to ship
+            </div>
+            <strong>Handpicked pieces</strong>
+          </div>
+        </div>
+      </div>
+
+      <div className="hero-scroll-cue" aria-hidden="true">
+        <span />
+      </div>
+    </section>
+  )
 }
 
 export default Hero
