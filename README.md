@@ -137,6 +137,26 @@ The main goals of this project are to demonstrate:
 
 ---
 
+## 📸 Project Showcase
+
+### ShopNest Application — Homepage
+
+![ShopNest homepage](docs/screenshots/01-shopnest-homepage.png)
+
+### ShopNest Application — Product Page
+
+![ShopNest product page](docs/screenshots/02-shopnest-product.png)
+
+### Kubernetes Workloads
+
+![Kubernetes workloads](docs/screenshots/03-kubernetes-workloads.png)
+
+### Grafana Monitoring
+
+![Grafana monitoring](docs/screenshots/04-grafana-monitoring.png)
+
+---
+
 ## 📁 Project Structure
 
 ```text
