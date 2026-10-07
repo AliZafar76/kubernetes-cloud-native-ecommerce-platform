@@ -8,7 +8,7 @@ frontend:
 
   image:
     repository: shopnest-frontend
-    tag: "2.1"
+    tag: "2.2"
     pullPolicy: IfNotPresent
 
   service:

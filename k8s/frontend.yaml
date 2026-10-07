@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: shopnest-frontend:2.1
+          image: shopnest-frontend:2.2
           imagePullPolicy: IfNotPresent
 
           ports:
